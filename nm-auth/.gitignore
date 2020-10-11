@@ -1,0 +1,8 @@
+/nm-auth-server/nm-auth-server.iml
+/nm-auth-server/target/
+/nm-auth-api/nm-auth-api.iml
+/nm-auth.iml
+/nm-auth-api/target/
+/.idea/
+/.DS_Store
+/nm-auth-server/.DS_Store

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+
+    <changeSet id="202008131434001" author="wuxb">
+        <createTable tableName="moments_source" remarks="朋友圈素材">
+            <column name="id" type="bigint" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="release_time" type="datetime" remarks="发布时间" >
+                <constraints nullable="true"/>
+            </column>
+            <column name="classify_id" type="bigint" remarks="素材分类id"/>
+            <column name="content" type="varchar(2000)" remarks="文案内容"/>
+            <column name="content_img" type="varchar(2000)" remarks="素材图片"/>
+            <column name="status" type="char(1)" defaultValue="0" remarks="0待发布，1已发布"/>
+            <column name="source_type" type="char(1)"  defaultValue="0" remarks="资源类型。0图片，1视频"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202008131434002" author="wuxb">
+        <createTable tableName="moments_operation" remarks="朋友圈素材操作">
+            <column name="id" type="bigint" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="moment_id" type="bigint" remarks="素材id"/>
+            <column name="type" type="char(1)" defaultValue="0" remarks="0点赞，1发圈"/>
+            <column name="user_id" type="bigint" remarks="用户id">
+                <constraints nullable="true"/>
+            </column>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="202008131434003" author="wuxb">
+        <createTable tableName="moments_classification" remarks="素材分类管理">
+            <column name="id" type="bigint" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="sort" type="int" remarks="排序"/>
+            <column name="classify_name" type="varchar(10)" remarks="分类名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="classify_desc" type="varchar(100)" remarks="分类说明"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202008131434004" author="wuxb">
+        <sql>
+            alter table moments_source modify content varchar(2000) character set utf8mb4 collate utf8mb4_unicode_ci;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

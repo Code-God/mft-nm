@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.auth.mapper.MallRoleMapper">
+
+    <select id="pageRole" resultType="com.meifute.nm.auth.entity.dto.MallRoleDTO">
+
+        select
+            id,name,description,status,belong
+        from
+            mall_role
+        where deleted = '0'
+        <if test="mallRoleQueryVO.id != null">
+            and id = #{mallRoleQueryVO.id}
+        </if>
+        <if test="mallRoleQueryVO.name != null">
+            and name = #{mallRoleQueryVO.name}
+        </if>
+        <if test="mallRoleQueryVO.description != null">
+            and description = #{mallRoleQueryVO.description}
+        </if>
+        <if test="mallRoleQueryVO.status != null">
+            and status = #{mallRoleQueryVO.status}
+        </if>
+        <if test="mallRoleQueryVO.id != null">
+            and belong = #{mallRoleQueryVO.belong}
+        </if>
+        order by create_time desc
+
+    </select>
+</mapper>

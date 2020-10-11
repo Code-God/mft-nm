@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.auth.mapper.MallRolePermissionMapper">
+
+    <delete id="removeRolePermission">
+        delete from mall_role_permission where role_id = #{roleId} and permission_id = #{permissionId}
+    </delete>
+
+    <select id="getPermissionByUserId" resultType="java.lang.String">
+        select permission_id from mall_role_permission
+        where
+        1=1 AND role_id in
+        <foreach collection="roleIdList" open="(" close=")" separator="," item="roleId" index="index">
+            #{roleId}
+        </foreach>
+    </select>
+    <select id="listRolePermission" resultType="com.meifute.nm.auth.entity.dto.MallPermissionDTO">
+        select
+            p.id,
+            p.name,
+            p.description,
+            p.status,
+            p.belong
+        from mall_role_permission rp left join mall_permission p on p.id = rp.permission_id
+        where p.deleted = '0' and rp.role_id = #{roleId}
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.auth.mapper.MallUserRoleMapper">
+
+    <delete id="deleteUserRole">
+        delete from  mall_user_role
+        where user_id = #{mallUserRole.userId}
+        and role_id = #{mallUserRole.roleId}
+    </delete>
+    <delete id="removeUserRole">
+        delete  from  mall_user_role
+        where user_id = #{userId}
+        and role_id = #{roleId}
+    </delete>
+    <select id="getRoleByUserId" resultType="java.lang.String">
+        select role_id from mall_user_role where user_id = #{id}
+    </select>
+    <select id="listUserRole" resultType="com.meifute.nm.auth.entity.dto.MallRoleDTO">
+        select
+            r.id,r.name,r.description,r.status,r.belong
+        from
+            mall_user_role ur left join mall_role r on r.id  = ur.role_id
+        where  r.deleted = '0' and ur.role_id = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.auth.mapper.MallPermissionMapper">
+
+    <select id="pagePermission" resultType="com.meifute.nm.auth.entity.dto.MallPermissionDTO">
+        select
+            id ,name,description,status,belong
+        from
+            mall_permission
+        where
+            deleted = '0'
+            <if test="permissionQueryVO.id != null">
+                and id = #{permissionQueryVO.id}
+            </if>
+            <if test="permissionQueryVO.name != null">
+                and name = #{permissionQueryVO.name}
+            </if>
+            <if test="permissionQueryVO.status != null">
+                and status = #{permissionQueryVO.status}
+            </if>
+            <if test="permissionQueryVO.belong != null">
+                and belong = #{permissionQueryVO.belong}
+            </if>
+        order by create_time desc
+    </select>
+</mapper>

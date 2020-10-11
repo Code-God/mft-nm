@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.others.business.training.mapper.TrainMeetingEnrollMapper">
+    
+    <select id="regularNoBackList" parameterType="com.meifute.nm.others.business.training.entity.TrainMeetingEnroll" resultType="com.meifute.nm.others.business.training.entity.TrainMeetingEnroll">
+        select * from train_meeting_enroll
+        where
+        enroll_status = #{param.enrollStatus}
+        and pay_status = #{param.payStatus}
+        and cost_backed = #{param.costBacked}
+        and deleted = #{param.deleted}
+        and TIMESTAMPDIFF(MINUTE, update_time, now()) &gt; 10
+    </select>
+</mapper>

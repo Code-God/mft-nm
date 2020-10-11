@@ -1,0 +1,42 @@
+server:
+  port: 52100
+spring:
+  application:
+    name: nm-auth
+  datasource:
+    url: jdbc:mysql://:3332/auth_only?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: dev_client_001
+    password: meifute@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 
+    port: 3334
+    password: meifute@123
+    database: 12
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  liquibase:
+    change-log: classpath:liquibase\master.xml
+    enabled: true
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1 #逻辑已删除值（默认为1）
+      logic-not-delete-value: 0 #逻辑未删除值（默认为0）
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.meifute.nm.auth.entity
+
+
+
+
+
+
+
+
+
+
+

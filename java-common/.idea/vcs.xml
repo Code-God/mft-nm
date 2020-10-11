@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/extennal-aliyun-express-query" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-aliyun-oss" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-aliyun-real-name-certification" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-aliyun-rocketmq" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-esign" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-jd-express" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-jiguang" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-pay-alipay" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-pay-icbc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/external-pay-weixin" vcs="Git" />
+  </component>
+</project>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+
+    <changeSet id="2020081815000001" author="chen">
+        <sql>
+            DROP TABLE IF EXISTS `MALL_USER`;
+            CREATE TABLE `MALL_USER` (
+            `id` BIGINT NOT NULL COMMENT '主键id',
+            `phone` VARCHAR(20) NOT NULL COMMENT '电话',
+            `username` VARCHAR(63) NOT NULL COMMENT '用户名',
+            `password` VARCHAR(127) NOT NULL COMMENT '密码',
+            `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` TIMESTAMP COMMENT '更新时间',
+            `version` BIGINT NOT NULL DEFAULT 0 COMMENT '乐观锁',
+            `deleted` bit NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `udx_username` (`username`) USING BTREE,
+            UNIQUE KEY `udx_phone` (`phone`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
+
+            DROP TABLE IF EXISTS `MALL_ROLE`;
+            CREATE TABLE `MALL_ROLE` (
+            `id` BIGINT NOT NULL COMMENT '主键id',
+            `name` VARCHAR(11) NOT NULL COMMENT '角色名称',
+            `description` VARCHAR(127) NOT NULL COMMENT '角色描述',
+            `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态：0=失效，1=生效',
+            `belong` TINYINT NOT NULL DEFAULT 0 COMMENT '归属：1=美浮特，2=学习平台,3=医院',
+            `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` TIMESTAMP COMMENT '更新时间',
+            `version` BIGINT NOT NULL DEFAULT 0 COMMENT '乐观锁',
+            `deleted` bit NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+            PRIMARY KEY (`id`),
+            KEY `idx_belong` (`belong`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色表';
+
+            DROP TABLE IF EXISTS `MALL_PERMISSION`;
+            CREATE TABLE `MALL_PERMISSION` (
+            `id` BIGINT NOT NULL COMMENT '主键id',
+            `name` VARCHAR(63) NOT NULL COMMENT '权限名称',
+            `description` VARCHAR(127) NOT NULL COMMENT '权限描述',
+            `status` CHAR(1) NOT NULL DEFAULT '1' COMMENT '状态：0=失效，1=生效',
+            `belong` CHAR(1) NOT NULL DEFAULT '0' COMMENT '归属：1=美浮特，2=学习平台,3=医院',
+            `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            `update_time` TIMESTAMP COMMENT '更新时间',
+            `version` BIGINT NOT NULL DEFAULT 0 COMMENT '乐观锁',
+            `deleted` bit NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+            PRIMARY KEY (`id`),
+            KEY `idx_belong` (`belong`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限表';
+
+            DROP TABLE IF EXISTS `MALL_USER_ROLE`;
+            CREATE TABLE `MALL_USER_ROLE` (
+            `user_id` BIGINT NOT NULL COMMENT 'user id',
+            `role_id` BIGINT NOT NULL COMMENT 'role id',
+            `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`user_id`,`role_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户角色表';
+
+            DROP TABLE IF EXISTS `MALL_ROLE_PERMISSION`;
+            CREATE TABLE `MALL_ROLE_PERMISSION` (
+            `role_id` BIGINT NOT NULL COMMENT 'role id',
+            `permission_id` BIGINT NOT NULL COMMENT 'permission id',
+            `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+            PRIMARY KEY (`role_id`,permission_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色权限表';
+
+            DROP TABLE IF EXISTS `oauth_client_details`;
+            CREATE TABLE `oauth_client_details` (
+            `client_id` varchar(127) NOT NULL COMMENT '客户端标识。',
+            `resource_ids` varchar(255) DEFAULT NULL COMMENT '接入资源列表。',
+            `client_secret` varchar(255) DEFAULT NULL COMMENT '客户端密钥。',
+            `scope` varchar(255) DEFAULT NULL,
+            `authorized_grant_types` varchar(255) DEFAULT NULL,
+            `web_server_redirect_uri` varchar(255) DEFAULT NULL,
+            `authorities` varchar(255) DEFAULT NULL,
+            `access_token_validity` int(11) DEFAULT NULL,
+            `refresh_token_validity` int(11) DEFAULT NULL,
+            `additional_information` longtext,
+            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `archived` tinyint(4) DEFAULT NULL,
+            `trusted` tinyint(4) DEFAULT NULL,
+            `autoapprove` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`client_id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='接入客户端信息';
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="2020082010250001" author="chen">
+        <sql>
+            <!-- 添加测试数据-->
+            INSERT INTO `auth_only`.`oauth_client_details`(`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `create_time`, `archived`, `trusted`, `autoapprove`) VALUES ('mft_default_client', 'mft', '$2a$10$PfORh2n8q9RbtcqcyctjVuIwPeb.dCb4CIbLgbYfqOBGH1/BO6mQC', 'ALL', 'password', '', NULL, 7200, 259200, NULL, '2020-08-19 14:21:03', 0, 0, 'false');
+            INSERT INTO `auth_only`.`mall_user_role`(`user_id`, `role_id`, `create_time`) VALUES (1, 1, '2020-08-19 15:47:20');
+            INSERT INTO `auth_only`.`mall_user`(`id`, `phone`, `username`, `password`, `create_time`, `update_time`, `version`, `deleted`) VALUES (1, '13764348378', 'zhangsan', '$2a$10$SK8YZNYaovdgQY6DcbuUQu0m5sOQ8SrJwYZed67HpuNfDUYOINTS2', '2020-08-19 15:21:36', '0000-00-00 00:00:00', 0, b'0');
+            INSERT INTO `auth_only`.`mall_role_permission`(`role_id`, `permission_id`, `create_time`) VALUES (1, 1, '2020-08-19 15:47:07');
+            INSERT INTO `auth_only`.`mall_role_permission`(`role_id`, `permission_id`, `create_time`) VALUES (1, 2, '2020-08-19 15:47:12');
+            INSERT INTO `auth_only`.`mall_role`(`id`, `name`, `description`, `status`, `belong`, `create_time`, `update_time`, `version`, `deleted`) VALUES (1, '超级管理员', '超管：全部权限', 1, 0, '2020-08-19 15:45:58', '0000-00-00 00:00:00', 0, b'0');
+            INSERT INTO `auth_only`.`mall_permission`(`id`, `name`, `description`, `status`, `belong`, `create_time`, `update_time`, `version`, `deleted`) VALUES (1, '/test1', '测试接口1', '1', '0', '2020-08-19 15:46:28', '0000-00-00 00:00:00', 0, b'0');
+            INSERT INTO `auth_only`.`mall_permission`(`id`, `name`, `description`, `status`, `belong`, `create_time`, `update_time`, `version`, `deleted`) VALUES (2, '/test2', '测试接口2', '1', '0', '2020-08-19 15:46:35', '0000-00-00 00:00:00', 0, b'0');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

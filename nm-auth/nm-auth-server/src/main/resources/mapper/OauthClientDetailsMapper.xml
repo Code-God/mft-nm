@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.auth.mapper.OauthClientDetailsMapper">
+
+    <update id="updateClient">
+
+        update
+            oauth_client_details
+        set
+            resource_ids = #{oauthClientDetailsUpdateVO.resourceIds},
+            client_secret = #{oauthClientDetailsUpdateVO.clientSecret},
+            scope = #{oauthClientDetailsUpdateVO.scope},
+            authorized_grant_types = #{oauthClientDetailsUpdateVO.authorizedGrantTypes},
+            web_server_redirect_uri = #{oauthClientDetailsUpdateVO.webServerRedirectUri},
+            authorities = #{oauthClientDetailsUpdateVO.authorities},
+            access_token_validity = #{oauthClientDetailsUpdateVO.accessTokenValidity},
+            refresh_token_validity = #{oauthClientDetailsUpdateVO.refreshTokenValidity},
+            additional_information = #{oauthClientDetailsUpdateVO.additionalInformation}
+        where
+            client_id = #{oauthClientDetailsUpdateVO.clientId}
+    </update>
+    <delete id="removeClient">
+        delete from oauth_client_details where client_id = #{clientId}
+    </delete>
+    <select id="pageClient" resultType="com.meifute.nm.auth.entity.dto.OauthClientDetailsDTO">
+        select  * from oauth_client_details where 1 = 1
+        <if test="oauthClientDetailsQueryVO.clientId">
+            and client_id = #{oauthClientDetailsQueryVO.clientId}
+        </if>
+        <if test="oauthClientDetailsQueryVO.webServerRedirectUri">
+            and web_server_redirect_uri = #{oauthClientDetailsQueryVO.webServerRedirectUri}
+        </if>
+        <if test="oauthClientDetailsQueryVO.additionalInformation">
+            and additional_information = #{oauthClientDetailsQueryVO.additionalInformation}
+        </if>
+    </select>
+    <select id="detailClient" resultType="com.meifute.nm.auth.entity.dto.OauthClientDetailsDTO">
+          select  * from oauth_client_details where client_id = #{clientId}
+    </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meifute.nm.others.business.training.mapper.TrainMeetingAffairsMapper">
+    
+    <select id="queryMeetingPage" parameterType="com.meifute.nm.othersserver.domain.vo.QueryMeetingParam" resultType="com.meifute.nm.others.business.training.entity.TrainMeetingAffairs">
+        select * from train_meeting_affairs
+        where deleted = 0
+        <if test="param.meetingName != null and param.meetingName != ''">
+            and meeting_name like concat('%',#{param.meetingName},'%')
+        </if>
+        <if test="param.meetingMasterCharge != null and param.meetingMasterCharge != ''">
+            and meeting_master_charge like concat('%',#{param.meetingMasterCharge},'%')
+        </if>
+        <if test="param.status != null and param.status != ''">
+            and status = #{param.status}
+        </if>
+        <if test="param.endEnrollStartTime != null">
+            and enroll_end_time &gt;= #{param.endEnrollStartTime}
+        </if>
+        <if test="param.endEnrollEndTime != null">
+            and enroll_end_time &lt;= #{param.endEnrollEndTime}
+        </if>
+        <if test="param.meetingStartTime != null">
+            and not (meeting_start_time &gt; #{param.meetingEndTime} or meeting_end_time &lt; #{param.meetingStartTime})
+        </if>
+        order by release_time desc
+    </select>
+</mapper>

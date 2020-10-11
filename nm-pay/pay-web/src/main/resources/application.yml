@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    active: client
+  application:
+    name: nm-pay
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  liquibase:
+    change-log: classpath:liquibase\master.xml
+    enabled: true
+
+  datasource:
+    url: jdbc:mysql://:3306/m_nm_pay?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT%2B8
+    username: ENC(C/OD9JXBBlgQqkmnNUg1utQDjrq7KMh+)
+    password: ENC(zjB536tijZRMYKIVvamzQT/SeecYtpWc)
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+  redis:
+    host: 
+    port: 6379
+    password: meifute@123
+
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: client
+      label: master
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@172.19.116.110:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1 #逻辑已删除值（默认为1）
+      logic-not-delete-value: 0 #逻辑未删除值（默认为0）
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.meifute.nm.pay.entity
+
+jasypt:
+  encryptor:
+    password: G0CvDz7oJn6
+
+knife4j:
+  basic:
+    enable: true
+    username: test
+    password: 123456

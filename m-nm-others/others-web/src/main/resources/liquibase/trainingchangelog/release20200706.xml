@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+
+    <changeSet id="202007061537001" author="wuxb">
+        <createTable tableName="train_meeting_affairs" remarks="培训会务活动">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="meeting_img" type="varchar(200)" remarks="banner图">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_name" type="varchar(50)" remarks="会务名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_start_time" type="datetime" remarks="会务开始时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_end_time" type="datetime" remarks="会务结束时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enroll_end_time" type="datetime" remarks="报名截止时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_master_charge" type="varchar(30)" remarks="会务主负责人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_address" type="varchar(50)" remarks="会务地点">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meeting_introduce" type="text" remarks="会务介绍">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enroll_condition" type="tinyint(4)" remarks="报名条件，0任何人，1总代以上，2一级以上以上，3VIP以上">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_of_enroll" type="int(6)" remarks="报名人数上限">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost" type="decimal(8,2)" defaultValue="0" remarks="费用">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_back" type="tinyint(1)" defaultValue="0" remarks="费用退回，签到后退回，0签到后返回账户，1不退">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="char(1)" defaultValue="0" remarks="状态，0待发布，1已发布，2已结束，3已取消"/>
+            <column name="release_time" type="datetime" remarks="发布时间"/>
+            <column name="qr_code" type="varchar(200)" remarks="签到二维码"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint(8)" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint(1)" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="202007061651002" author="wuxb">
+        <createTable tableName="train_meeting_enroll" remarks="培训会务报名数据表">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="meeting_id" type="varchar(20)" remarks="会务id">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="varchar(20)" remarks="用户id">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_code" type="varchar(20)" remarks="商务编号"/>
+            <column name="enroll_time" type="datetime" remarks="报名时间"/>
+            <column name="leader_user_id" type="varchar(20)" remarks="上级id"/>
+            <column name="city" type="varchar(20)" remarks="所在城市"/>
+            <column name="enroll_status" type="char(1)" defaultValue="0" remarks="报名成功，0未成功，1已成功"/>
+            <column name="status" type="char(1)" defaultValue="0" remarks="是否签到 0未签到，1已签到"/>
+            <column name="cost_backed" type="char(1)" defaultValue="0" remarks="费用退回，0未退款，1费用退回中, 2已退款 "/>
+            <column name="cost" type="decimal(8,2)" remarks="费用"/>
+            <column name="cost_backed_time" type="datetime" remarks="退款时间"/>
+            <column name="remark" type="varchar(100)" remarks="备注说明"/>
+            <column name="pay_status" type="char(1)" defaultValue="0" remarks="是否支付，0未支付，1已支付"/>
+            <column name="pay_type" type="char(2)" remarks="支付方式"/>
+            <column name="pay_time" type="datetime" remarks="支付时间"/>
+            <column name="pay_trade_no" type="varchar(30)" remarks="第三方支付编号"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint(8)" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint(1)" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202007081615002" author="wuxb">
+        <createTable tableName="train_cost_back" remarks="退费记录">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="enroll_id" type="varchar(20)" remarks="报名id"/>
+            <column name="cost" type="decimal(8,2)" defaultValue="0" remarks="退费金额"/>
+            <column name="back_time" type="datetime" remarks="退款时间"/>
+            <column name="remark" type="varchar(200)" remarks="备注说明"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint(8)" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint(1)" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2020071716360001" author="wuxb">
+        <modifyDataType tableName="train_meeting_affairs" columnName="meeting_introduce" newDataType="LONGTEXT"/>
+    </changeSet>
+
+    <changeSet id="2020072010580002" author="wuxb">
+        <addColumn tableName="train_meeting_enroll">
+            <column name="close_status" type="char(1)" defaultValue="0" remarks="0正常。1已取消"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="202008191611001" author="wuxb">
+        <createTable tableName="amoy_activity_enroll" remarks="厦门市场活动">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="varchar(20)" remarks="用户id"/>
+            <column name="name" type="varchar(20)" remarks="用户姓名"/>
+            <column name="phone" type="varchar(20)" remarks="用户手机号"/>
+            <column name="enroll_time" type="datetime" remarks="报名时间"/>
+            <column name="enroll_status" type="tinyint" defaultValue="0" remarks="报名状态, 0代付款，2支付中，3已完成，4已取消"/>
+            <column name="amount" type="decimal(8,2)" remarks="付费金额"/>
+            <column name="refund" type="tinyint" defaultValue="0" remarks="是否退款 0否，1退款中, 2已退款"/>
+            <column name="pay_type" type="char(2)" remarks="支付方式"/>
+            <column name="pay_time" type="datetime" remarks="支付时间"/>
+            <column name="pay_trade_no" type="varchar(30)" remarks="第三方支付编号"/>
+            <column name="enroll_type" type="tinyint" defaultValue="0" remarks="0客户报名，1后台报名"/>
+            <column name="address" type="varchar(255)" remarks="常驻地址"/>
+            <column name="occupation" type="varchar(20)" remarks="职业"/>
+            <column name="leader_name" type="varchar(20)" remarks="上级姓名"/>
+            <column name="leader_phone" type="varchar(20)" remarks="上级手机号"/>
+            <column name="team" type="varchar(20)" remarks="所属团队"/>
+            <column name="accommodation" type="varchar(20)" remarks="住宿"/>
+            <column name="id_card" type="varchar(20)" remarks="身份证号"/>
+            <column name="special_desc" type="varchar(50)" remarks="用户特殊情况说明"/>
+            <column name="is_someone_else" type="tinyint" defaultValue="0" remarks="是否带其他人参加，0否，1带其他人同行"/>
+            <column name="someone_else_number" type="int" defaultValue="0" remarks="同行人数"/>
+            <column name="remark" type="varchar(200)" remarks="备注说明"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint(1)" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202008191611002" author="wuxb">
+        <createTable tableName="amoy_activity_someone" remarks="厦门活动同行人信息">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="enroll_id" type="varchar(20)" remarks="报名id"/>
+            <column name="user_id" type="varchar(20)" remarks="用户id"/>
+            <column name="name" type="varchar(20)" remarks="同行人姓名"/>
+            <column name="phone" type="varchar(20)" remarks="同行人手机号"/>
+            <column name="id_card" type="varchar(20)" remarks="同行人身份证号"/>
+            <column name="status" type="tinyint(1)" defaultValue="0" remarks="状态，0正常，1已取消"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint(1)" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202008191611003" author="wuxb">
+        <createTable tableName="amoy_activity_signin" remarks="厦门活动签到信息">
+            <column name="id" type="varchar(20)" remarks="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="enroll_id" type="varchar(20)" remarks="报名id"/>
+            <column name="user_id" type="varchar(20)" remarks="用户id"/>
+            <column name="sign_in_place" type="tinyint" remarks="签到场所，1酒店，2旅游车，3会议大厅，4晚宴"/>
+            <column name="longitude_and_latitude" type="varchar(50)" remarks="签到时的经纬度"/>
+            <column name="create_time" type="datetime" remarks="创建时间"/>
+            <column name="update_time" type="datetime" remarks="更新时间"/>
+            <column name="version" type="bigint" defaultValue="0" remarks="版本号"/>
+            <column name="deleted" type="tinyint" defaultValue="0" remarks="逻辑删除"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="202008191611004" author="wuxb">
+        <addColumn tableName="amoy_activity_enroll">
+            <column name="join_energy_run" type="tinyint" defaultValue="0" remarks="是否参加9月6号星光闪耀活力跑，1参加，2不参加"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

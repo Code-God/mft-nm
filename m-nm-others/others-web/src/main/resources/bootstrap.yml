@@ -1,0 +1,148 @@
+spring:
+  profiles:
+    active: client
+  application:
+    name: nm-others
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  liquibase:
+    change-log: classpath:liquibase\master.xml
+    enabled: true
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1 #逻辑已删除值（默认为1）
+      logic-not-delete-value: 0 #逻辑未删除值（默认为0）
+  mapper-locations: classpath:/mapper/*/*Mapper.xml
+  type-aliases-package: com.meifute.core.others.business.*.entity
+
+jasypt:
+  encryptor:
+    password: G0CvDz7oJn6
+
+# 对于OkHttpClient以外的http客户端，可以启用默认的gzip解码器以UTF-8编码解码gzip响应
+feign:
+  compression:
+    response:
+      enabled: true
+      useGzipDecoder: true
+
+##本地环境
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: local
+      label: master
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@localhost:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+##客户端测试环境
+---
+spring:
+  profiles: client
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: client
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@172.19.116.110:8880/eureka/
+  instance:
+    prefer-ip-address: true
+    
+##客户端测试环境2
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: client
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@eureka-test:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+#A集群生产环境
+---
+spring:
+  profiles: prod-a
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: prod-a
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@eureka-a-1:8880/eureka/,http://admin-love:donotloveyou@eureka-a-2:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+#B集群生产环境
+---
+spring:
+  profiles: prod-b
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: prod-b
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@eureka-b-1:8880/eureka/,http://admin-love:donotloveyou@eureka-b-2:8880/eureka/
+  instance:
+    prefer-ip-address: true
+
+#预发布环境
+---
+spring:
+  profiles: prod-release
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      profile: prod-release
+      label: master
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin-love:donotloveyou@eureka-release:8880/eureka/
+  instance:
+    prefer-ip-address: true

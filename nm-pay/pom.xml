@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.meifute.nm</groupId>
+    <artifactId>nm-pay</artifactId>
+    <version>2.0.0</version>
+    <name>nm-pay</name>
+    <description>Pay project for Spring Boot</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>pay-api</module>
+        <module>pay-web</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <java.version>11</java.version>
+        <swagger2.version>2.9.2</swagger2.version>
+        <swagger2.ui.version>1.9.6</swagger2.ui.version>
+        <knife4j.version>2.0.4</knife4j.version>
+        <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <maven.repositorypath></maven.repositorypath>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <!--在引用时请在maven中央仓库搜索最新版本号-->
+            <version>${knife4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 设定主仓库 -->
+    <repositories>
+        <!-- nexus私服 -->
+        <repository>
+            <id>public</id>
+            <url>${maven.repositorypath}/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- 发布项目的配置 -->
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <url>${maven.repositorypath}/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>${maven.repositorypath}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>

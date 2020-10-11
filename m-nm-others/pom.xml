@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.meifute.nm</groupId>
+    <artifactId>m-nm-others</artifactId>
+    <version>2.0.0</version>
+    <name>m-nm-others</name>
+    <description>Others project for Spring Boot</description>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>others-web</module>
+        <module>others-common</module>
+        <module>others-api</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <swagger2.version>2.8.0</swagger2.version>
+        <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <maven.repositorypath></maven.repositorypath>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 设定主仓库 -->
+    <repositories>
+        <!-- nexus私服 -->
+        <repository>
+            <id>public</id>
+            <url>${maven.repositorypath}/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!-- 发布项目的配置 -->
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <url>${maven.repositorypath}/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>${maven.repositorypath}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
